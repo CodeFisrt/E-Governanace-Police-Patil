@@ -1,7 +1,10 @@
 ### AL ###
 #Template for AL projects for Dynamics 365 Business Central
-#launch.json folder
+#launch.json folder 
 .vscode/
+
+/backend-express/node_modules/
+/backend-express/**/node_modules/
 #Cache folder
 .alcache/
 #Symbols folder

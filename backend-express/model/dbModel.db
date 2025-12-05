@@ -1,0 +1,259 @@
+-- Make sure you're using a database first:
+-- USE your_database_name;
+
+-- ------------------------------------------------------
+-- 1. POLICE STATIONS
+-- ------------------------------------------------------
+CREATE TABLE police_stations (
+    station_id INT AUTO_INCREMENT PRIMARY KEY,
+    station_name VARCHAR(255) NOT NULL,
+    address VARCHAR(255),
+    phone VARCHAR(20),
+    taluka VARCHAR(150),
+    district VARCHAR(150)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ------------------------------------------------------
+-- 2. VILLAGES
+-- ------------------------------------------------------
+CREATE TABLE villages (
+    village_id INT AUTO_INCREMENT PRIMARY KEY,
+    village_name VARCHAR(255) NOT NULL,
+    taluka VARCHAR(150),
+    district VARCHAR(150),
+    station_id INT,
+    CONSTRAINT fk_villages_station
+        FOREIGN KEY (station_id) REFERENCES police_stations(station_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ------------------------------------------------------
+-- 3. USERS
+-- ------------------------------------------------------
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(150) NOT NULL,
+    last_name VARCHAR(150) NOT NULL,
+    phone VARCHAR(20) NOT NULL UNIQUE,
+    role ENUM('police_patil', 'police_officer', 'admin') NOT NULL,
+    village_id INT,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT users_village_id_fkey
+        FOREIGN KEY (village_id) REFERENCES villages(village_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ------------------------------------------------------
+-- 4. REPORTS
+-- ------------------------------------------------------
+CREATE TABLE reports (
+    report_id INT AUTO_INCREMENT PRIMARY KEY,
+    report_type ENUM('daily', 'incident', 'complaint') NOT NULL,
+    user_id INT NOT NULL,
+    village_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    category VARCHAR(150),
+    location VARCHAR(255),
+    gps_lat DECIMAL(10,6),
+    gps_long DECIMAL(10,6),
+    photo_url VARCHAR(255),
+    video_url VARCHAR(255),
+    status ENUM('pending', 'forwarded', 'completed', 'rejected') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT reports_user_id_fkey
+        FOREIGN KEY (user_id) REFERENCES users(user_id),
+    CONSTRAINT reports_village_id_fkey
+        FOREIGN KEY (village_id) REFERENCES villages(village_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ------------------------------------------------------
+-- 5. ATTENDANCE
+-- ------------------------------------------------------
+CREATE TABLE attendance (
+    attendance_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    checkin_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    checkout_time TIMESTAMP NULL,
+    gps_lat DECIMAL(10,6),
+    gps_long DECIMAL(10,6),
+    status ENUM('checked_in', 'checked_out') DEFAULT 'checked_in',
+    CONSTRAINT attendance_user_id_fkey
+        FOREIGN KEY (user_id) REFERENCES users(user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ------------------------------------------------------
+-- 6. COMPLAINT ACTIONS
+-- ------------------------------------------------------
+CREATE TABLE complaint_actions (
+    action_id INT AUTO_INCREMENT PRIMARY KEY,
+    report_id INT NOT NULL,
+    officer_id INT NOT NULL,
+    action_taken TEXT,
+    action_status ENUM('reviewed', 'in_progress', 'resolved', 'rejected') DEFAULT 'reviewed',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_report_id
+        FOREIGN KEY (report_id) REFERENCES reports(report_id),
+    CONSTRAINT fk_officer_id
+        FOREIGN KEY (officer_id) REFERENCES users(user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ------------------------------------------------------
+-- 7. NOTIFICATIONS
+-- ------------------------------------------------------
+CREATE TABLE notifications (
+    notification_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(255),
+    message TEXT,
+    seen TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT notifications_user_id_fkey
+        FOREIGN KEY (user_id) REFERENCES users(user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+
+**************************************post gres sql 
+
+-- ================================
+-- ENUM TYPES
+-- ================================
+CREATE TYPE user_role AS ENUM ('police_patil', 'police_officer', 'admin');
+
+CREATE TYPE report_type AS ENUM ('daily', 'incident', 'complaint');
+
+CREATE TYPE report_status AS ENUM ('pending', 'forwarded', 'completed', 'rejected');
+
+CREATE TYPE attendance_status AS ENUM ('checked_in', 'checked_out');
+
+CREATE TYPE action_status AS ENUM ('reviewed', 'in_progress', 'resolved', 'rejected');
+
+-- ================================
+-- 1. POLICE STATIONS
+-- ================================
+CREATE TABLE police_stations (
+    station_id SERIAL PRIMARY KEY,
+    station_name VARCHAR(255) NOT NULL,
+    address VARCHAR(255),
+    phone VARCHAR(20),
+    taluka VARCHAR(150),
+    district VARCHAR(150)
+);
+
+-- ================================
+-- 2. VILLAGES
+-- ================================
+CREATE TABLE villages (
+    village_id SERIAL PRIMARY KEY,
+    village_name VARCHAR(255) NOT NULL,
+    taluka VARCHAR(150),
+    district VARCHAR(150),
+    station_id INT,
+    CONSTRAINT fk_villages_station
+        FOREIGN KEY (station_id) REFERENCES police_stations(station_id)
+);
+
+-- ================================
+-- 3. USERS
+-- ================================
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY ,
+    first_name VARCHAR(150) NOT NULL,
+    last_name VARCHAR(150) NOT NULL,
+    phone VARCHAR(20) NOT NULL UNIQUE,
+    role user_role NOT NULL,
+    village_id INT, 
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT users_village_id_fkey
+        FOREIGN KEY (village_id) REFERENCES villages(village_id)
+);
+
+-- ================================
+-- 4. REPORTS
+-- ================================
+CREATE TABLE reports (
+    report_id SERIAL PRIMARY KEY,
+    report_type report_type NOT NULL,
+    user_id INT NOT NULL,
+    village_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    category VARCHAR(150),
+    location VARCHAR(255),
+    gps_lat NUMERIC(10,6),
+    gps_long NUMERIC(10,6),
+    photo_url VARCHAR(255),
+    video_url VARCHAR(255),
+    status report_status DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT reports_user_id_fkey
+        FOREIGN KEY (user_id) REFERENCES users(user_id),
+    CONSTRAINT reports_village_id_fkey
+        FOREIGN KEY (village_id) REFERENCES villages(village_id)
+);
+
+-- ================================
+-- 5. ATTENDANCE
+-- ================================
+CREATE TABLE attendance (
+    attendance_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    checkin_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    checkout_time TIMESTAMP NULL,
+    gps_lat NUMERIC(10,6),
+    gps_long NUMERIC(10,6),
+    status attendance_status DEFAULT 'checked_in',
+    CONSTRAINT attendance_user_id_fkey
+        FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- ================================
+-- 6. COMPLAINT ACTIONS
+-- ================================
+CREATE TABLE complaint_actions (
+    action_id SERIAL PRIMARY KEY,
+    report_id INT NOT NULL,
+    officer_id INT NOT NULL,
+    action_taken TEXT,
+    action_status action_status DEFAULT 'reviewed',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_report_id
+        FOREIGN KEY (report_id) REFERENCES reports(report_id),
+    CONSTRAINT fk_officer_id
+        FOREIGN KEY (officer_id) REFERENCES users(user_id)
+);
+
+-- ================================
+-- 7. NOTIFICATIONS
+-- ================================
+CREATE TABLE notifications (
+    notification_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(255),
+    message TEXT,
+    seen BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT notifications_user_id_fkey
+        FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- ================================
+-- 8. TRIGGER FOR updated_at ON reports
+-- (MySQL ON UPDATE CURRENT_TIMESTAMP equivalent)
+-- ================================
+CREATE OR REPLACE FUNCTION set_reports_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_set_reports_updated_at
+BEFORE UPDATE ON reports
+FOR EACH ROW
+EXECUTE FUNCTION set_reports_updated_at();

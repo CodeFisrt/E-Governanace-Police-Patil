@@ -6,190 +6,159 @@ import accounting from "../assets/accounting.png";
 
 import { useState } from "react";
 import Login from "./Login";
+import ToggleButton from "./ToggleButton";
 
 function Home() {
-  const [language, setLanguage] = useState("English");
   const [loginUser, setLoginUser] = useState("");
+  const [language, setLanguage] = useState("en"); // en or mr
 
-  function ToggleButton() {
-    return (
-      <div className="flex items-center gap-1 bg-[#0B2A52] p-2 rounded-full w-fit">
-        {/* Marathi Button */}
-        <button
-          onClick={() => setLanguage("Marathi")}
-          className={` py-1 px-2 rounded-full font-semibold transition-all ${
-            language === "Marathi" ? "bg-white text-[#0B2A52]" : "text-white"
-          }`}
-        >
-          मराठी
-        </button>
+  const t = {
+    en: {
+      appTitle: "Police Patil",
+      appSubtitle: "Daily Reporting System",
+      selectRole: "Select Your Role",
+      policePatil: "Police Patil",
+      policePatilDesc: "Village level law & order",
+      stationOfficer: "Police Station Officer",
+      stationOfficerDesc: "Police station management",
+      admin: "Administrator",
+      adminDesc: "System administrator",
+    },
+    mr: {
+      appTitle: "पोलीस पाटील",
+      appSubtitle: "दैनंदिन अहवाल प्रणाली",
+      selectRole: "आपली भूमिका निवडा",
+      policePatil: "पोलीस पाटील",
+      policePatilDesc: "ग्रामस्तरावरील कायदा व सुव्यवस्था",
+      stationOfficer: "पोलीस स्टेशन अधिकारी",
+      stationOfficerDesc: "पोलीस स्टेशन व्यवस्थापन",
+      admin: "प्रशासक",
+      adminDesc: "प्रणाली प्रशासक",
+    },
+  };
 
-        {/* English Button */}
-        <button
-          onClick={() => setLanguage("English")}
-          className={`px-2 py-1 rounded-full font-semibold transition-all ${
-            language === "English" ? "text-[#0B2A52] bg-white " : "text-white"
-          }`}
-        >
-          English
-        </button>
-      </div>
-    );
-  }
+  const text = t[language];
 
   return (
     <>
       <div>
-        <nav className="  w-full z-20 top-0 start-0 border-b border-default bg-blue-950">
-          <div className="max-w-screen-xl  flex justify-center items-center  mx-auto p-4 text-white ">
-            <div className="flex p-2 gap-2">
-              <span className="bg-amber-50 rounded-full p-2">
-                <img className="h-16 w-18 " src={PoliceLogo} alt="asaa" />
-              </span>
-              <div className="grid items-center justify-center mt-2 mb-5">
-                <span className="self-center font-serif font-extrabold text-2xl text-heading  whitespace-nowrap">
-                  Police Patil
-                </span>
-                <span className="">Daily Reporting System</span>
+        <nav className="w-full h-23 top-0 start-0 border-b border-default bg-blue-950">
+          <div className="flex justify-center items-center w-full text-white">
+            <div className="flex justify-between gap-20 w-2/7">
+              <div className="flex gap-3 items-center">
+                <div className="bg-white shadow border border-white h-14 w-15 rounded-full p-1">
+                  <img className="h-12 w-full" src={PoliceLogo} alt="logo" />
+                </div>
+                <div className="grid items-center justify-center mt-5 mb-5">
+                  <div className="font-extrabold ">{text.appTitle}</div>
+                  <span className="text-xs text-gray-300 font-bold">
+                    {text.appSubtitle}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="flex align-middle items-center justify-center">
-              <ToggleButton />
+
+              <div className="flex align-middle items-center justify-center">
+                {/* 🔗 Pass language + setLanguage here */}
+                <ToggleButton language={language} setLanguage={setLanguage} />
+              </div>
             </div>
           </div>
         </nav>
       </div>
-      <div className=" grid w-full m-auto justify-center gap-4 mt-30 ">
+
+      <div className="m-auto grid w-full justify-center gap-4 mt-10">
+        <div className="flex justify-center font-sans font-medium text-2xl text-gray-900">
+          {text.selectRole}
+        </div>
+
+        {/* Police Patil card */}
         <div
           onClick={() => setLoginUser("police_patil")}
-          className=" cursor-pointer h-20 w-full rounded-2xl flex items-center justify-between gap-2 pl-1 text-sm font-serif font-medium text-heading rounded-base bg-white border border-gray-400  dark:text-black focus:ring-1 hover:bg-gray-200 transition 1s "
+          className="cursor-pointer h-20 w-full rounded-2xl flex items-center justify-between gap-2 pl-1 text-sm font-medium text-heading bg-white border border-gray-400 dark:text-black focus:ring-1 hover:bg-gray-200 transition 1s"
         >
-          <div className="bg-amber-50 rounded-full p-2 justify-between ">
-            <img
-              className="h-10 w-10 flex items-start justify-between  "
-              src={people}
-              alt=""
-            />
+          <div className="bg-amber-50 rounded-full p-2 justify-between">
+            <img className="h-10 w-10" src={people} alt="" />
           </div>
-          <div className="grid font-serif">
-            <span className="text-2xl">Police Patil</span>
-            <span className="text-10px">Village level law & order</span>
+
+          <div className="grid w-80">
+            <span className="font-bold text-lg text-blue-950">
+              {text.policePatil}
+            </span>
+            <span className="text-sm text-gray-500">
+              {text.policePatilDesc}
+            </span>
           </div>
-          <div className="flex justify-center align-middle items-center">
-            <svg
-              width="60px"
-              height="60px"
-              viewBox="0 0 24.00 24.00"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                {" "}
-                <path
-                  d="M10 7L15 12L10 17"
-                  stroke="#000000"
-                  strokeWidth="0.9359999999999999"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>{" "}
-              </g>
-            </svg>
-          </div>
+
+          <ArrowIcon />
         </div>
+
+        {/* Police Officer card */}
         <div
           onClick={() => setLoginUser("police_officer")}
-          className="h-20 cursor-pointer w-full rounded-2xl flex items-center justify-between gap-2 pl-1 text-sm font-serif font-medium text-heading rounded-base bg-white border border-gray-400  dark:text-black focus:ring-1 hover:bg-gray-200 transition 1s   "
+          className="h-20 cursor-pointer w-full rounded-2xl flex items-center justify-between gap-2 pl-1 text-sm font-medium text-heading bg-white border border-gray-400 dark:text-black focus:ring-1 hover:bg-gray-200 transition 1s"
         >
-          <div className="bg-amber-50 rounded-full p-2 justify-between ">
-            <img
-              className="h-10 w-10 flex items-start justify-between  "
-              src={policestation}
-              alt=""
-            />
+          <div className="bg-amber-50 rounded-full p-2 justify-between">
+            <img className="h-10 w-10" src={policestation} alt="" />
           </div>
-          <div className="grid font-serif">
-            <span className=" text-2xl">Police Station Officer</span>
-            <span className="text-10px">Police station management</span>
+          <div className="grid w-80">
+            <span className="font-bold text-lg text-blue-950">
+              {text.stationOfficer}
+            </span>
+            <span className="text-sm text-gray-500">
+              {text.stationOfficerDesc}
+            </span>
           </div>
-          <svg
-            width="60px"
-            height="60px"
-            viewBox="0 0 24.00 24.00"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              {" "}
-              <path
-                d="M10 7L15 12L10 17"
-                stroke="#000000"
-                strokeWidth="0.9359999999999999"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></path>{" "}
-            </g>
-          </svg>
+          <ArrowIcon />
         </div>
+
+        {/* Admin card */}
         <div
           onClick={() => setLoginUser("admin")}
-          className=" h-20 cursor-pointer w-full rounded-2xl flex items-center justify-between gap-2 pl-1 text-sm font-serif font-medium text-heading rounded-base bg-white border border-gray-400  dark:text-black focus:ring-1  hover:bg-gray-200 transition 1s "
+          className="h-20 cursor-pointer w-full rounded-2xl flex items-center justify-between gap-2 pl-1 text-sm font-medium text-heading bg-white border border-gray-400 dark:text-black focus:ring-1 hover:bg-gray-200 transition 1s"
         >
-          <div className="bg-amber-50 rounded-full p-2 justify-between ">
-            <img
-              className="h-10 w-10 flex items-start justify-between  "
-              src={accounting}
-              alt=""
-            />
+          <div className="bg-amber-50 rounded-full p-2 justify-between">
+            <img className="h-10 w-10" src={accounting} alt="" />
           </div>
-          <div className="grid font-serif">
-            <span className=" text-2xl">Administrator</span>
-            <span className="text-10px">System administrator</span>
+          <div className="grid w-80">
+            <span className="font-bold text-lg text-blue-950">
+              {text.admin}
+            </span>
+            <span className="text-sm text-gray-500">{text.adminDesc}</span>
           </div>
-          <div className="flex justify-center align-middle items-center">
-            <svg
-              width="60px"
-              height="60px"
-              viewBox="0 0 24.00 24.00"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                {" "}
-                <path
-                  d="M10 7L15 12L10 17"
-                  stroke="#000000"
-                  strokeWidth="0.9359999999999999"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>{" "}
-              </g>
-            </svg>
-          </div>
+          <ArrowIcon />
         </div>
       </div>
 
-      {loginUser == "police_patil" && <Login user="police_patil" />}
-      {loginUser == "police_officer" && <Login user="police_officer" />}
-      {loginUser == "admin" && <Login user="admin" />}
+      {loginUser === "police_patil" && (
+        <Login user="police_patil" language={language} />
+      )}
+      {loginUser === "police_officer" && (
+        <Login user="police_officer" language={language} />
+      )}
+      {loginUser === "admin" && <Login user="admin" language={language} />}
     </>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <div className="flex justify-center align-middle items-center">
+      <svg
+        width="50px"
+        height="30px"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M10 7L15 12L10 17"
+          stroke="gray"
+          strokeWidth="0.936"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        ></path>
+      </svg>
+    </div>
   );
 }
 

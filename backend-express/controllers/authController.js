@@ -1,5 +1,6 @@
 const pool = require("../config/db");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
   const { first_name, last_name, phone, role, password_hash } = req.body;
@@ -19,5 +20,28 @@ exports.register = async (req, res) => {
   } catch (error) {
     res.status(400).json(error);
     console.log(error);
+  }
+};
+
+exports.login = async (req, res) => {
+  const { phone, password_hash } = req.body;
+  const hash = await bcrypt.hash(password_hash, 10);
+
+  try {
+    const result = await pool.query(`SELECT * FROM users WHERE phone = $1`, [
+      phone,
+    ]);
+
+    const user = result.rows[0];
+
+    const valid = await bcrypt.compare(password_hash, user.password_hash);
+
+    if (!valid) return res.status(401).json({ msg: "Invalid Password" });
+    const token = jwt.sign({ id: user.user_id, role: user.role }, "secret123", {
+      expiresIn: "1d",
+    });
+    res.status(200).json({ user: user.first_name, role: user.role, token });
+  } catch (error) {
+    res.status(500).json(error);
   }
 };

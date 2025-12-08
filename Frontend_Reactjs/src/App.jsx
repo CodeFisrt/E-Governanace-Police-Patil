@@ -1,8 +1,10 @@
 import { useState } from "react";
 
+
 import "./App.css";
-import Login from "./pages/login/Login";
-import LandingPage from "./pages/login/LandingPage";
+import Home from "./component/Home";
+import Login from "./component/Login";
+
 
 
 
@@ -11,9 +13,9 @@ function App() {
 
   return (
     <>
-      {/* <Login /> */}
-      <LandingPage/>
-      
+<Home/>
+{/* <Login/> */}
+   
     </>
   );
 }

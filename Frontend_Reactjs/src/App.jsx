@@ -1,21 +1,17 @@
-import { useState } from "react";
-
-
 import "./App.css";
+import PolicePatilDashboard from "./component/PolicePatilDashboard";
 import Home from "./component/Home";
 import Login from "./component/Login";
-
-
-
+import { BrowserRouter } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-<Home/>
-{/* <Login/> */}
-   
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/policepatildashboard" element={<PolicePatilDashboard />} />
+      </Routes>
     </>
   );
 }

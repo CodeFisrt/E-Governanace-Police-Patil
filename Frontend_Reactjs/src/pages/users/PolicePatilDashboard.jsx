@@ -1,6 +1,6 @@
 // Dashboard.jsx
 import React from "react";
-import ToggleButton from "./ToggleButton";
+import ToggleButton from "../../component/ToggleButton";
 import { useState } from "react";
 
 const Dashboard = () => {
@@ -74,7 +74,7 @@ const Dashboard = () => {
 
         <div className="flex items-center gap-4">
           {/* Language toggle */}
-            <ToggleButton language={language} setLanguage={setLanguage} />
+          <ToggleButton language={language} setLanguage={setLanguage} />
 
           {/* Icons (placeholders) */}
           <button className="relative w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-lg">
@@ -147,7 +147,9 @@ const Dashboard = () => {
               <div
                 key={act.title}
                 className={`flex items-center gap-4 px-6 py-4 text-sm ${
-                  idx !== activities.length - 1 ? "border-b border-gray-100" : ""
+                  idx !== activities.length - 1
+                    ? "border-b border-gray-100"
+                    : ""
                 }`}
               >
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-lg">

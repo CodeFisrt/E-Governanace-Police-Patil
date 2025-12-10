@@ -170,13 +170,13 @@ const Dashboard = () => {
             {activities.map((act, idx) => (
               <div
                 key={act.title}
-                className={`flex items-center gap-4 px-6 py-4 text-sm ${
+                className={`flex items-center gap-4 px-6 py-4 text-sm  ${
                   idx !== activities.length - 1
-                    ? "border-b border-gray-100"
-                    : ""
+                    ?`border-b border-gray-100`
+                    : ``,
                   idx !== activities.length - 1
-                    ? "border-b border-gray-100"
-                    : ""
+                    ? `border-b border-gray-100`
+                    : ``
                 }`}
               >
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-lg">

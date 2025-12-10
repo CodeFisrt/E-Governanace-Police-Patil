@@ -15,7 +15,7 @@ function App() {
   return (
     <>
       <Routes>
-        {/* <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route
           path="/policepatildashboard"
           element={<PolicePatilDashboard />}
@@ -25,7 +25,7 @@ function App() {
         <Route path="/complaints" element={<Complaints />} />
         <Route path="/attendence" element={<Attendence />} />
         <Route path="/villageinfo" element={<VillageInfo />} />
-        <Route path="/notification" element={<Notification />} /> */}
+        <Route path="/notification" element={<Notification />} />
         <Route path="/location" element={<Location />} />
       </Routes>
     </>

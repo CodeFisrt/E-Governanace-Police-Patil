@@ -1,10 +1,12 @@
 // Dashboard.jsx
 import React from "react";
-import ToggleButton from "./ToggleButton";
-import { useState } from "react";
+// import ToggleButton from "../../component/ToggleButton";
+
+import UsersNavbar from "../../../component/UsersNavbar";
+import { Link, Links } from "react-router-dom";
+import DailyActivity from "../policepatil/DailyActivity";
 
 const Dashboard = () => {
-  const [language, setLanguage] = useState("en");
   const summaryCards = [
     {
       title: "Total Reports",
@@ -37,12 +39,51 @@ const Dashboard = () => {
   ];
 
   const quickActions = [
-    { label: "Daily Activity Report", icon: "📄", active: false },
-    { label: "Incident Report", icon: "⚠️", active: true },
-    { label: "Complaints", icon: "💬", active: false, badge: 3 },
-    { label: "Attendance", icon: "🕒", active: false },
-    { label: "Village Info", icon: "📍", active: false },
-    { label: "Notifications", icon: "✅", active: false, badge: 5 },
+    {
+      id: 1,
+      label: "Daily Activity Report",
+      icon: "📄",
+      active: false,
+      url: "/dailyactivity",
+    },
+    {
+      id: 2,
+      label: "Incident Report",
+      icon: "⚠️",
+      active: true,
+      url: "/incidentReport",
+    },
+
+    {
+      id: 3,
+      label: "Complaints",
+      icon: "💬",
+      active: false,
+      badge: 3,
+      url: "/complaints",
+    },
+    {
+      id: 4,
+      label: "Attendance",
+      icon: "🕒",
+      active: false,
+      url: "/attendence",
+    },
+    {
+      id: 5,
+      label: "Village Info",
+      icon: "📍",
+      active: false,
+      url: "/villageinfo",
+    },
+    {
+      id: 6,
+      label: "Notifications",
+      icon: "✅",
+      active: false,
+      badge: 5,
+      url: "/notification",
+    },
   ];
 
   const activities = [
@@ -66,28 +107,9 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[#f4f6fb]">
       {/* Top Navbar */}
-      <header className="w-full bg-[#03396c] text-white px-8 py-3 flex items-center justify-between">
-        <div className="text-sm md:text-base">
-          <div className="opacity-80">Good Afternoon</div>
-          <div className="font-semibold text-lg md:text-xl">Ramrao Patil</div>
-        </div>
+      <UsersNavbar />
 
-        <div className="flex items-center gap-4">
-          {/* Language toggle */}
-            <ToggleButton language={language} setLanguage={setLanguage} />
-
-          {/* Icons (placeholders) */}
-          <button className="relative w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-lg">
-            🔔
-            <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-red-500"></span>
-          </button>
-          <button className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-lg">
-            ⏻
-          </button>
-        </div>
-      </header>
-
-      <main className="px-6 md:px-10 py-6 space-y-8">
+      <main className="px-6 md:px-40 py-6 space-y-8">
         {/* Summary cards */}
         <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {summaryCards.map((card) => (
@@ -112,26 +134,28 @@ const Dashboard = () => {
           <h2 className="text-base font-semibold text-gray-800 mb-3">
             Quick Actions
           </h2>
-          <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
+          <div className="grid gap-5 md:grid-cols-3 lg:grid-cols-6">
             {quickActions.map((item) => (
               <button
-                key={item.label}
-                className={`relative flex flex-col items-center justify-center rounded-xl border shadow-sm py-6 px-2 text-center transition
+                key={item.id}
+                className={`relative flex flex-col items-center justify-center rounded-xl border shadow-sm py-6 px-2 text-center transition 
                 ${
                   item.active
                     ? "bg-[#e02020] text-white border-transparent"
                     : "bg-white text-gray-800 border-gray-100 hover:shadow-md"
                 }`}
               >
-                {item.badge && (
-                  <span className="absolute top-2 right-3 inline-flex items-center justify-center rounded-full bg-red-500 text-white text-xs w-5 h-5">
-                    {item.badge}
+                <Link to={item.url}>
+                  {item.badge && (
+                    <span className="absolute top-2 right-3 inline-flex items-center justify-center rounded-full bg-red-500 text-white text-xs w-5 h-5">
+                      {item.badge}
+                    </span>
+                  )}
+                  <span className="text-3xl mb-2">{item.icon}</span>
+                  <span className="text-sm font-medium leading-tight">
+                    {item.label}
                   </span>
-                )}
-                <span className="text-3xl mb-2">{item.icon}</span>
-                <span className="text-sm font-medium leading-tight">
-                  {item.label}
-                </span>
+                </Link>
               </button>
             ))}
           </div>
@@ -147,7 +171,9 @@ const Dashboard = () => {
               <div
                 key={act.title}
                 className={`flex items-center gap-4 px-6 py-4 text-sm ${
-                  idx !== activities.length - 1 ? "border-b border-gray-100" : ""
+                  idx !== activities.length - 1
+                    ? "border-b border-gray-100"
+                    : ""
                 }`}
               >
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-lg">

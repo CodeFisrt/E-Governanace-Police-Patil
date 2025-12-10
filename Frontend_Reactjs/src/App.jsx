@@ -1,5 +1,6 @@
 import "./App.css";
 import PolicePatilDashboard from "./pages/users/PolicePatilDashboard";
+import Home from "./pages/Home";
 
 import { BrowserRouter } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";

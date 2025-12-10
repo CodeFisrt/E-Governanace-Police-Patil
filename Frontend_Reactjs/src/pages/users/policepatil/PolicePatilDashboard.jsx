@@ -174,6 +174,9 @@ const Dashboard = () => {
                   idx !== activities.length - 1
                     ? "border-b border-gray-100"
                     : ""
+                  idx !== activities.length - 1
+                    ? "border-b border-gray-100"
+                    : ""
                 }`}
               >
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-lg">

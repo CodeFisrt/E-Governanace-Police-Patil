@@ -3,6 +3,7 @@ import PolicePatilDashboard from "./pages/users/policepatil/PolicePatilDashboard
 import Home from "./pages/Home";
 import { BrowserRouter } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
+import AdminDashboard from "./pages/users/admin/AdminDashboard";
 import DailyActivity from "./pages/users/policepatil/DailyActivity";
 import IncidentReport from "./pages/users/policepatil/IncidentReport";
 import Complaints from "./pages/users/policepatil/Complaints";

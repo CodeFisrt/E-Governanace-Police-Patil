@@ -6,7 +6,7 @@ import accounting from "../assets/accounting.png";
 
 import { useState } from "react";
 import Login from "./Login";
-import ToggleButton from "./../component/ToggleButton";
+import ToggleButton from "../component/ToggleButton";
 
 function Home() {
   const [loginUser, setLoginUser] = useState("");

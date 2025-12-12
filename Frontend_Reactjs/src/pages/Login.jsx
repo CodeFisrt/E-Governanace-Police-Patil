@@ -24,9 +24,12 @@ function Login({ user, language = "en" }) {
 
       if (apiResult.data.role == user) {
         console.log("Patil login");
-        localStorage.setItem("token", apiResult.data.token);
+        sessionStorage.setItem("token", apiResult.data.token);
         console.log(apiResult);
-        navigation("/policepatildashboard");
+        if (apiResult.data.role == "police_patil")
+          navigation("/policepatildashboard");
+
+        if (apiResult.data.role == "admin") navigation("/admindashboard");
       }
     } catch (error) {
       console.log(error);
@@ -56,7 +59,7 @@ function Login({ user, language = "en" }) {
   const text = t[language] || t.en;
 
   return (
-    <div className="flex flex-col items-center justify-center mt-20 ">
+    <div className="flex flex-col items-center justify-center mt-20 no-scrollbar">
       <div className="w-full bg-transparent rounded-lg   md:mt-0 sm:max-w-md xl:p-0 dark:bg-transparent ">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-xl font-serif font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">

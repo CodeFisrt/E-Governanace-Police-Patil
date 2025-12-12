@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import Users from "./Users";
+import Villages from "./Villages";
+import Categories from "./Categories";
+import Reports from "./Reports";
+
+export let capitalizeString = (str) => {
+  let first = str.charAt(0).toUpperCase();
+  let second = str.slice(1).toLowerCase();
+  return first + second;
+};
 
 const AdminDashboard = () => {
+  console.log("Admin Dash");
+
+  const [getInfo, setGetInfo] = useState("users");
+  const [addUser, setAddUser] = useState(false);
+
   return (
     <>
       <div>
@@ -102,7 +117,16 @@ const AdminDashboard = () => {
             </div>
           </div>
           <div className="flex gap-2 mb-6 overflow-x-auto pb-2 ">
-            <button className="flex cursor-pointer items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors bg-primary text-primary-foreground bg-blue-700">
+            <button
+              onClick={() => {
+                setGetInfo("users");
+              }}
+              className={`flex cursor-pointer items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors bg-primary  ${
+                getInfo == "users"
+                  ? "bg-blue-900 text-gray-200"
+                  : "hover:bg-gray-400  bg-gray-200"
+              }`}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -122,7 +146,16 @@ const AdminDashboard = () => {
               </svg>
               Users
             </button>
-            <button className="flex cursor-pointer items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors bg-primary text-gray-700 bg-gray-200">
+            <button
+              onClick={() => {
+                setGetInfo("villages");
+              }}
+              className={`flex cursor-pointer items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors bg-primary  ${
+                getInfo == "villages"
+                  ? "bg-blue-900 text-gray-200"
+                  : "hover:bg-gray-400  bg-gray-200"
+              }`}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -140,7 +173,16 @@ const AdminDashboard = () => {
               </svg>
               Villages
             </button>
-            <button className="flex cursor-pointer items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors bg-primary text-gray-700 bg-gray-200">
+            <button
+              onClick={() => {
+                setGetInfo("categories");
+              }}
+              className={`flex cursor-pointer items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors bg-primary  ${
+                getInfo == "categories"
+                  ? "bg-blue-900 text-gray-200"
+                  : "hover:bg-gray-400  bg-gray-200"
+              }`}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -159,7 +201,14 @@ const AdminDashboard = () => {
               </svg>
               Categories
             </button>
-            <button className="flex cursor-pointer items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors bg-primary text-gray-700 bg-gray-200">
+            <button
+              onClick={() => setGetInfo("reports")}
+              className={`flex cursor-pointer items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors bg-primary  ${
+                getInfo == "reports"
+                  ? "bg-blue-900 text-gray-200"
+                  : "hover:bg-gray-400  bg-gray-200"
+              }`}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -202,11 +251,18 @@ const AdminDashboard = () => {
                 </svg>
                 <input
                   type="text"
-                  className="flex w-full rounded-md bg-gray-100 border-input bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground flex w-full rounded-md shadow bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-9 h-10 focus-visible:ring-2 focus-visible:ring-ring focus:border-none focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-9 h-10"
+                  className=" bg-gray-100 border-input bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground flex w-full rounded-md shadow bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-9 h-10 focus-visible:ring-2 focus-visible:ring-ring focus:border-none focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-9 h-10"
                   placeholder="Search"
                 />
               </div>
-              <button className="inline-flex items-center px-4 py-2 text-white bg-blue-700 text-sm rounded-lg">
+              <button
+                className={`inline-flex font-semibold hover:bg-blue-600 items-center cursor-pointer  px-4 py-2 text-white bg-blue-700 text-sm rounded-lg transition-all ${
+                  addUser ? "bg-red-500 gap-2 hover:bg-red-600" : ""
+                }`}
+                onClick={() => {
+                  addUser ? setAddUser(false) : setAddUser(true);
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -217,99 +273,21 @@ const AdminDashboard = () => {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="lucide lucide-plus w-4 h-4"
+                  className={`lucide lucide-plus w-4 h-4 ${
+                    addUser ? "rotate-45" : ""
+                  }`}
                 >
                   <path d="M5 12h14"></path>
                   <path d="M12 5v14"></path>
                 </svg>
-                Add User
+                {addUser ? `Close` : `Add ${capitalizeString(getInfo)}`}
               </button>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-gray-500">
-                <thead>
-                  <tr className="border-t border-b border-gray-300 text-sm ">
-                    <th className="text-left p-4">Name</th>
-                    <th className="text-left p-4">Village</th>
-                    <th className="text-left p-4">Mobile</th>
-                    <th className="text-left p-4">Status</th>
-                    <th className="text-right p-4">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-t border-b border-gray-300 text-sm hover:bg-gray-100 transition-colors 2s">
-                    <td className="p-4">
-                      <div className="flex items-center gap-2 ">
-                        <div className="flex bg-blue-100 w-9 h-9 items-center justify-center rounded-full">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="text-blue-950 lucide lucide-users w-4 h-4 text-primary"
-                          >
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                          </svg>
-                        </div>
-                        <span> UserName</span>
-                      </div>
-                    </td>
-                    <td className="p-4">Shahapur</td>
-                    <td className="p-4">Mobile</td>
-                    <td className="p-4">Status</td>
-                    <td className="p-4">
-                      <div className="flex gap-2 justify-end ">
-                        <button className="cursor-pointer text-blue-950 h-8 w-8 justify-center items-center flex hover:bg-blue-500 hover:text-white transition-all 1s rounded-sm">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="lucide lucide-square-pen w-4 h-4"
-                          >
-                            <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                            <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path>
-                          </svg>
-                        </button>
-                        <button className="cursor-pointer text-red-700 h-8 w-8 justify-center items-center flex hover:bg-red-600 hover:text-white transition-all 1s rounded-sm">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="lucide lucide-trash2 w-4 h-4"
-                          >
-                            <path d="M3 6h18"></path>
-                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                            <line x1="10" x2="10" y1="11" y2="17"></line>
-                            <line x1="14" x2="14" y1="11" y2="17"></line>
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+
+            {getInfo == "users" && <Users addUser={addUser} />}
+            {getInfo == "villages" && <Villages addUser={addUser} />}
+            {getInfo == "categories" && <Categories addUser={addUser} />}
+            {getInfo == "reports" && <Reports addUser={addUser} />}
           </div>
         </main>
       </div>

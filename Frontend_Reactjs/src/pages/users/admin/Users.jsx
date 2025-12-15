@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { capitalizeString } from "./AdminDashboard";
 
@@ -13,7 +13,6 @@ const Users = ({ addUser }) => {
 
   function getRole(event) {
     event.preventDefault();
-    console.log(event.target.value);
     setUserRole(event.target.value);
   }
 
@@ -21,9 +20,8 @@ const Users = ({ addUser }) => {
     const res = await axios.get(`http://localhost:5000/api/auth/getdetails`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(res.data);
+    
     setShowUsers(res.data);
-    console.log(showUsers);
   };
 
   useEffect(() => {
@@ -273,4 +271,4 @@ const Users = ({ addUser }) => {
   );
 };
 
-export default Users;
+export default memo(Users);

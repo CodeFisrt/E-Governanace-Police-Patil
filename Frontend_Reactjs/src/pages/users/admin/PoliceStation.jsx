@@ -5,13 +5,14 @@ const PoliceStation = ({ addUser }) => {
   console.log("Police station renders");
 
   const AddPoliceStation = () => {
-    const [formData, setFormData] = useState({
+    const initialForm = {
       police_station_name: "",
       police_station_code: "",
       station_phone: "",
       station_taluka: "",
       station_district: "",
-    });
+    };
+    const [formData, setFormData] = useState(initialForm);
 
     // 🔹 Handle input changes
     const handleChange = useCallback((e) => {
@@ -28,11 +29,8 @@ const PoliceStation = ({ addUser }) => {
       (e) => {
         e.preventDefault();
 
-        // ✅ ALL FORM VALUES AVAILABLE HERE
         console.log("Submitted Police Station Data:", formData);
-
-        // Example API call
-        // axios.post("/api/police-station", formData);
+        setFormData(initialForm);
       },
       [formData]
     );

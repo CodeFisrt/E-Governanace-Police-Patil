@@ -115,7 +115,9 @@ const AdminDashboard = () => {
                   <path d="M16 17H8"></path>
                 </svg>
               </div>
-              <span className="text-sm font-medium opacity-90">Categories</span>
+              <span className="text-sm font-medium opacity-90">
+                Total Reports
+              </span>
               <span className="text-3xl font-bold mt-2">5</span>
             </div>
           </div>

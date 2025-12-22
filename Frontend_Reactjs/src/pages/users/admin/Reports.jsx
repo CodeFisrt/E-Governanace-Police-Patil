@@ -1,7 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 
 const Reports = () => {
+  console.log("reports renders");
+  
   return <div>Reports</div>;
 };
 
-export default Reports;
+export default memo(Reports);

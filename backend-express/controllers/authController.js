@@ -47,13 +47,11 @@ exports.login = async (req, res) => {
 };
 
 exports.getAllUserDetail = async (req, res) => {
-  // const userId = req.user.id;
   try {
     let result = await pool.query(`SELECT * FROM users`);
     if (result.rows.length === 0)
       return res.status(400).json({ msg: "user not found" });
     res.status(200).json(result.rows);
-    console.log(result.rows);
   } catch (error) {
     res.status(400).json(error);
   }

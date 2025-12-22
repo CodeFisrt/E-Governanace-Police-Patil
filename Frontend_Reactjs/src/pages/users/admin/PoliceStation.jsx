@@ -1,25 +1,61 @@
-import React, { memo } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { capitalizeString } from "./AdminDashboard";
 
-const Villages = ({ addUser }) => {
-  function AddVillages() {
+const PoliceStation = ({ addUser }) => {
+  console.log("Police station renders");
+
+  const AddPoliceStation = () => {
+    const initialForm = {
+      police_station_name: "",
+      police_station_code: "",
+      station_phone: "",
+      station_taluka: "",
+      station_district: "",
+    };
+    const [formData, setFormData] = useState(initialForm);
+
+    // 🔹 Handle input changes
+    const handleChange = useCallback((e) => {
+      const { name, value } = e.target;
+
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }, []);
+
+    // 🔹 Handle form submit
+    const handleSubmit = useCallback(
+      (e) => {
+        e.preventDefault();
+
+        console.log("Submitted Police Station Data:", formData);
+        setFormData(initialForm);
+      },
+      [formData]
+    );
     return (
       <div className="overflow-x-auto">
         <div className="text-center text-lg font-bold cursor-pointer">
           <h3>Add Police Station</h3>
         </div>
-        <form className="max-w-xl mx-auto mt-4 grid grid-cols-2 gap-4">
+        <form
+          className="max-w-xl mx-auto mt-4 grid grid-cols-2 gap-4"
+          onSubmit={handleSubmit}
+        >
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="text"
-              name="floating_first_name"
-              id="floating_first_name"
+              name="police_station_name"
+              id="police_station_name"
               className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-              placeholder=" "
               required
+              onChange={handleChange}
+              value={formData.police_station_name}
+              placeholder=" "
             />
             <label
-              htmlFor="floating_first_name"
+              htmlFor="police_station_name"
               className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >
               Name of Police Station
@@ -29,118 +65,100 @@ const Villages = ({ addUser }) => {
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="number"
-              name="floating_last_name"
-              id="floating_last_name"
+              name="police_station_code"
+              id="police_station_code"
               className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
               placeholder=" "
               required
+              onChange={handleChange}
+              value={formData.police_station_code}
             />
             <label
-              htmlFor="floating_last_name"
+              htmlFor="police_station_code"
               className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >
               Police Station Code
             </label>
           </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="email"
-              name="floating_email"
-              id="floating_email"
-              className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-              placeholder=" "
-              required
-            />
-            <label
-              htmlFor="floating_email"
-              className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-            >
-              Email address
-            </label>
-          </div>
 
           <div className="relative z-0 w-full mb-5 group">
             <input
-              type="password"
-              name="floating_password"
-              id="floating_password"
+              type="tel"
+              name="station_phone"
+              id="station_phone"
               className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
               placeholder=" "
               required
+              onChange={handleChange}
+              value={formData.station_phone}
             />
             <label
-              htmlFor="floating_password"
+              htmlFor="station_phone"
               className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >
-              Password
+              Phone
             </label>
           </div>
           <div className="relative z-0 w-full mb-5 group">
             <input
-              type="password"
-              name="repeat_password"
-              id="floating_repeat_password"
+              type="text"
+              name="station_taluka"
+              id="station_taluka"
               className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
               placeholder=" "
+              onChange={handleChange}
+              value={formData.station_taluka}
               required
             />
             <label
-              htmlFor="floating_repeat_password"
+              htmlFor="station_phone"
               className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >
-              Confirm password
+              Taluka
             </label>
           </div>
-
-          <div className="relative  z-0 w-full flex justify-evenly  mb-5 group border-blue-950">
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              type="text"
+              name="station_district"
+              id="station_district"
+              className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
+              placeholder=" "
+              required
+              onChange={handleChange}
+              value={formData.station_district}
+            />
             <label
-              htmlFor="dropdown"
-              className="block text-sm-lg  text-gray-700 items-center my-auto"
+              htmlFor="station_district"
+              className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >
-              Add
+              District
             </label>
-
-            <select
-              id="dropdown"
-              className=" px-4 py-1 rounded-lg border border-gray-300 bg-white 
-               text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 
-               focus:border-blue-500 transition-all cursor-pointer"
-              //   onChange={(event) => getRole(event)}
-              //   value={userRole}
-            >
-              <option value="">Select Role</option>
-              <option value="police_patil">Police Patil</option>
-              <option value="police_station">Police Station</option>
-              <option value="admin">Administrator</option>
-            </select>
           </div>
-          <div className="z-0 w-full flex justify-evenly mb-5 border-blue-950"></div>
 
           <button
             type="submit"
-            className="text-black bg-brand box-border col-start-2 bg-gray-500 cursor-pointer rounded-2xl border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
+            className="text-white bg-brand box-border w-1/2 m-auto col-span-2 bg-gray-500 cursor-pointer rounded-2xl border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-bold leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
           >
             Submit
           </button>
         </form>
       </div>
     );
-  }
-  console.log("Village component rendered");
-
+  };
   return (
     <>
       {addUser ? (
-        <AddVillages />
+        <AddPoliceStation />
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-gray-500">
             <thead>
               <tr className="border-t border-b border-gray-300 text-sm ">
-                <th className="text-left p-4">Villages</th>
-                <th className="text-left p-4">Taluks</th>
-                <th className="text-left p-4">District</th>
-                <th className="text-left p-4">Police Station</th>
+                <th className="text-left p-4">Name</th>
+                <th className="text-left p-4">Village</th>
+                <th className="text-left p-4">Mobile</th>
+                <th className="text-left p-4">Status</th>
                 <th className="text-right p-4">Actions</th>
               </tr>
             </thead>
@@ -225,4 +243,4 @@ const Villages = ({ addUser }) => {
   );
 };
 
-export default Villages;
+export default memo(PoliceStation);

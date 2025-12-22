@@ -1,8 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import Users from "./Users";
 import Villages from "./Villages";
 import Categories from "./Categories";
 import Reports from "./Reports";
+import PoliceStation from "./PoliceStation";
+import UsersNavbar from "../../../component/UsersNavbar";
 
 export let capitalizeString = (str) => {
   let first = str.charAt(0).toUpperCase();
@@ -18,6 +20,7 @@ const AdminDashboard = () => {
 
   return (
     <>
+      <UsersNavbar />
       <div>
         <main className="px-4 py-6  max-w-7xl mx-auto  ">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -112,7 +115,9 @@ const AdminDashboard = () => {
                   <path d="M16 17H8"></path>
                 </svg>
               </div>
-              <span className="text-sm font-medium opacity-90">Categories</span>
+              <span className="text-sm font-medium opacity-90">
+                Total Reports
+              </span>
               <span className="text-3xl font-bold mt-2">5</span>
             </div>
           </div>
@@ -172,6 +177,33 @@ const AdminDashboard = () => {
                 <circle cx="12" cy="10" r="3"></circle>
               </svg>
               Villages
+            </button>
+            <button
+              onClick={() => {
+                setGetInfo("Police station");
+              }}
+              className={`flex cursor-pointer items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors bg-primary  ${
+                getInfo == "Police station"
+                  ? "bg-blue-900 text-gray-200"
+                  : "hover:bg-gray-400  bg-gray-200"
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-map-pin w-4 h-4"
+              >
+                <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              Police Station
             </button>
             <button
               onClick={() => {
@@ -288,6 +320,7 @@ const AdminDashboard = () => {
             {getInfo == "villages" && <Villages addUser={addUser} />}
             {getInfo == "categories" && <Categories addUser={addUser} />}
             {getInfo == "reports" && <Reports addUser={addUser} />}
+            {getInfo == "Police station" && <PoliceStation addUser={addUser} />}
           </div>
         </main>
       </div>

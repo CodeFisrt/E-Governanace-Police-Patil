@@ -28,3 +28,15 @@ exports.addPoliceStation = async (req, res) => {
     console.log(error);
   }
 };
+
+exports.getAllPoliceStations = async (req, res) => {
+  try {
+    let result = await pool.query(`SELECT * FROM police_stations`);
+    if (result.rows[0] === 0)
+      return res.status(400).json({ msg: "Police station not found" });
+
+    res.status(200).json(result.rows);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};

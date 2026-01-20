@@ -1,12 +1,25 @@
 import React, { memo } from "react";
 import { capitalizeString } from "./AdminDashboard";
+import axios from "axios";
+import { useState } from "react";
 
 const Villages = ({ addUser }) => {
   function AddVillages() {
+    const [policeStationList, setPoliceStationList] = useState([]);
+
+    const getStations = async () => {
+      const result = await axios.get(
+        "http://localhost:5000/api/admin/getallpolicestation"
+      );
+      setPoliceStationList(result.data);
+      console.log(result.data);
+      console.log(policeStationList);
+    };
+
     return (
       <div className="overflow-x-auto">
         <div className="text-center text-lg font-bold cursor-pointer">
-          <h3>Add Police Station</h3>
+          <h3>Add Villages</h3>
         </div>
         <form className="max-w-xl mx-auto mt-4 grid grid-cols-2 gap-4">
           <div className="relative z-0 w-full mb-5 group">
@@ -22,7 +35,7 @@ const Villages = ({ addUser }) => {
               htmlFor="floating_first_name"
               className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >
-              Name of Police Station
+              Name of Village
             </label>
           </div>
 
@@ -39,7 +52,7 @@ const Villages = ({ addUser }) => {
               htmlFor="floating_last_name"
               className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >
-              Police Station Code
+              Taluka
             </label>
           </div>
           <div className="relative z-0 w-full mb-5 group">
@@ -55,49 +68,16 @@ const Villages = ({ addUser }) => {
               htmlFor="floating_email"
               className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >
-              Email address
+              District
             </label>
           </div>
 
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="password"
-              name="floating_password"
-              id="floating_password"
-              className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-              placeholder=" "
-              required
-            />
-            <label
-              htmlFor="floating_password"
-              className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-            >
-              Password
-            </label>
-          </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="password"
-              name="repeat_password"
-              id="floating_repeat_password"
-              className="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-              placeholder=" "
-              required
-            />
-            <label
-              htmlFor="floating_repeat_password"
-              className="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-            >
-              Confirm password
-            </label>
-          </div>
-
-          <div className="relative  z-0 w-full flex justify-evenly  mb-5 group border-blue-950">
+          <div className="relative  z-0 w-full flex justify-evenly col-span-2  mb-5 group border-blue-950">
             <label
               htmlFor="dropdown"
               className="block text-sm-lg  text-gray-700 items-center my-auto"
             >
-              Add
+              Select Police Station
             </label>
 
             <select
@@ -107,11 +87,14 @@ const Villages = ({ addUser }) => {
                focus:border-blue-500 transition-all cursor-pointer"
               //   onChange={(event) => getRole(event)}
               //   value={userRole}
+              onClick={() => {
+                getStations();
+              }}
             >
               <option value="">Select Role</option>
-              <option value="police_patil">Police Patil</option>
-              <option value="police_station">Police Station</option>
-              <option value="admin">Administrator</option>
+              {policeStationList.map((p) => {
+                <option value={p.station_id}>{p.station_name}</option>;
+              })}
             </select>
           </div>
           <div className="z-0 w-full flex justify-evenly mb-5 border-blue-950"></div>

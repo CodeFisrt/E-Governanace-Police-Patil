@@ -1,5 +1,6 @@
 const authRoutes = require("./routers/authRoute");
 const policeStationRouter = require("./routers/admin/policeStationRouter");
+const villageRouter = require("./routers/admin/villageRoute");
 const express = require("express");
 const cors = require("cors");
 
@@ -16,6 +17,7 @@ app.use("/api/auth", authRoutes);
 // for add police station through admin
 
 app.use("/api/admin", policeStationRouter);
+app.use("/api/admin", villageRouter);
 
 // const BASE_URL = "https://india-location-hub.in/api";
 

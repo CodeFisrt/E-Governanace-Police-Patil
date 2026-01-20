@@ -31,6 +31,8 @@ function App() {
         <Route path="/notification" element={<Notification />} />
         <Route path="/location" element={<Location />} />
         <Route path="/try" element={<CameraCapture/>} />
+        {/* <Route path="/" element={<Home />} /> */}
+
         {/* <MonthlyCalendar/> */}
         
       </Routes>

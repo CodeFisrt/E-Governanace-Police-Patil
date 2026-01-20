@@ -6,38 +6,8 @@ import { useState, useEffect } from "react";
 const TABS = ["All", "Pending", "In Progress", "Completed"];
 
 const defaultComplaintsData = [
-  {
-    id: 1,
-    title: "Land Dispute - Field Boundary",
-    name: "राजेंद्र शिंदे",
-    date: "2024-01-15",
-    status: "Pending",
-    color: "orange",
-  },
-  {
-    id: 2,
-    title: "Water Distribution Issue",
-    name: "संजय पाटील",
-    date: "2024-01-14",
-    status: "In Progress",
-    color: "blue",
-  },
-  {
-    id: 3,
-    title: "Road Encroachment",
-    name: "प्रकाश जाधव",
-    date: "2024-01-13",
-    status: "Completed",
-    color: "green",
-  },
-  {
-    id: 4,
-    title: "Neighbor Dispute - Noise",
-    name: "सुनीता देशमुख",
-    date: "2024-01-12",
-    status: "Pending",
-    color: "orange",
-  },
+ 
+ 
 ];
 
 function Complaints() {

@@ -28,6 +28,7 @@ function Login({ user, language = "en" }) {
         console.log(apiResult);
         navigation("/policepatildashboard");
       }
+        
     } catch (error) {
       console.log(error);
       setShowErro("Invalid Phone or Password");

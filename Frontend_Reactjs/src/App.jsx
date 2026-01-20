@@ -10,9 +10,7 @@ import Complaints from "./pages/users/policepatil/Complaints";
 import Attendence from "./pages/users/policepatil/Attendence";
 import VillageInfo from "./pages/users/policepatil/VillageInfo";
 import Notification from "./pages/users/policepatil/Notification";
-import Location from "./component/Location";
-import CameraCapture from "./component/CameraCapture";
-import MonthlyCalendar from "./component/MonthlyCalendar";
+import Location from "./component/location";
 
 function App() {
   return (
@@ -30,11 +28,6 @@ function App() {
         <Route path="/villageinfo" element={<VillageInfo />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/location" element={<Location />} />
-        <Route path="/try" element={<CameraCapture/>} />
-        {/* <Route path="/" element={<Home />} /> */}
-
-        {/* <MonthlyCalendar/> */}
-        
       </Routes>
     </>
   );

@@ -13,6 +13,8 @@ import Notification from "./pages/users/policepatil/Notification";
 import Location from "./component/Location";
 import CameraCapture from "./component/CameraCapture";
 import MonthlyCalendar from "./component/MonthlyCalendar";
+import UsersNavbar from "./component/UsersNavbar";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
 
         {/* <MonthlyCalendar/> */}
         
+        <Route path="/admindashboard" element={<AdminDashboard />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

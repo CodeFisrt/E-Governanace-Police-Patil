@@ -1,73 +1,84 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
 
-const Location = () => {
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+function Location({ isAttendance }) {
+  const [address, setAddress] = useState("");
 
-  const handleLocationClick = () => {
-    setIsLoading(true);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // Success callback
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-          setIsLoading(false);
-        },
-        (err) => {
-          // Error callback
-          setError(err.message);
-          setIsLoading(false);
-        },
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 } // Options
-      );
-    } else {
-      setError("Geolocation is not supported by this browser.");
-      setIsLoading(false);
+  const handleCaptureLocation = () => {
+    if (!navigator.geolocation) {
+      alert("GeoLocation Not Supported !");
+      return;
     }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        try {
+          const res = await axios.get(
+            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+          );
+
+          const data = await res.data;
+          // console.log(data);
+
+          if (data && data.display_name) {
+            setAddress(data.display_name);
+          } else {
+            setAddress("Address not found");
+          }
+        } catch (error) {
+          console.error("Error fetching ", error);
+          setAddress("Failed to get address");
+        }
+      },
+      (error) => {
+        console.error("Error getting  ", error);
+        alert("Please allow location permission");
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      }
+    );
   };
 
   useEffect(() => {
-    // Request location permission
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.log("Location permission granted");
-          console.log("Lat:", position.coords.latitude);
-          console.log("Lng:", position.coords.longitude);
-        },
-        (error) => {
-          console.log("Location permission denied", error.message);
-        }
-      );
-    } else {
-      console.log("Geolocation not supported by browser");
-    }
+    handleCaptureLocation();
   }, []);
 
   return (
-    <div className="location-form">
-      <h3>Capture Live Location</h3>
-      <button type="button" onClick={handleLocationClick} disabled={isLoading}>
-        {isLoading ? "Fetching Location..." : "Get My Location"}
-      </button>
-
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
-
-      {location.latitude && location.longitude && (
-        <div>
-          <p>Latitude: {location.latitude}</p>
-          <p>Longitude: {location.longitude}</p>
-          {/* You can add hidden form inputs to submit this data */}
-          <input type="hidden" name="latitude" value={location.latitude} />
-          <input type="hidden" name="longitude" value={location.longitude} />
+    <div>
+      {isAttendance ? (
+        <div className="">
+          <div className="text-gray-400 font-medium">Current Location</div>
+          <div className=" border-gray-300 rounded w-full p-2">{address}</div>
+        </div>
+      ) : (
+        <div className="grid gap-2 ">
+          <label htmlFor="location">GPS Location</label>
+          <div className="flex gap-3 w-full ">
+            <div className="border-1 border-gray-300 rounded w-full p-4">
+              {/* {data.display_name} */}
+              {address}
+            </div>
+            {/* <button
+              className="border-1 border-gray-300 rounded p-1 w-1/4 bg-gray-300 "
+              onClick={(e) => {
+                e.preventDefault();
+                handleCaptureLocation();
+              }}
+            >
+              Get Location
+            </button> */}
+          </div>
         </div>
       )}
     </div>
   );
-};
+}
 
 export default Location;

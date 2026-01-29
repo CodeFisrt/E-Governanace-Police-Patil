@@ -13,6 +13,7 @@ const PoliceStationDashboard = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [patils, setPatils] = useState(null);
 
   // Fetch statistics
   useEffect(() => {
@@ -33,7 +34,7 @@ const PoliceStationDashboard = () => {
         axios.get(`http://localhost:5000/api/reports/report-count`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        axios.get(`http://localhost:5000/api/admin/village-count`, {
+        axios.get(`http://localhost:5000/api/admin/villages`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -59,8 +60,23 @@ const PoliceStationDashboard = () => {
   };
 
   // Fetch recent reports
+  const id = localStorage.getItem("station_id");
   useEffect(() => {
+    const getPatils = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/station/policepatils/${id}`,
+        );
+
+        setPatils(res.data);
+        console.log(res.data);
+        console.log("patil ", patils.length);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchReports();
+    getPatils();
   }, [token]);
 
   const fetchReports = async () => {
@@ -383,6 +399,56 @@ const PoliceStationDashboard = () => {
             </div>
           </div>
         </main>
+      </div>
+      <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+        <table className="w-full text-sm text-left rtl:text-right text-body">
+          <thead className="text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default">
+            <tr>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Product name
+              </th>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Color
+              </th>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Category
+              </th>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Price
+              </th>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Stock
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {patils?.map((item) => (
+              <tr
+                className="bg-neutral-primary border-b border-default"
+                key={item.id}
+              >
+                <td
+                  scope="row"
+                  className="px-6 py-4 font-medium text-heading whitespace-nowrap"
+                >
+                  {item.first_name}
+                </td>
+                <td
+                  scope="row"
+                  className="px-6 py-4 font-medium text-heading whitespace-nowrap"
+                >
+                  {item.last_name}
+                </td>
+                <td
+                  scope="row"
+                  className="px-6 py-4 font-medium text-heading whitespace-nowrap"
+                >
+                  {item.phone}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   );

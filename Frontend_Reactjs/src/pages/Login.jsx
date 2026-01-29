@@ -26,6 +26,7 @@ function Login({ user, language = "en" }) {
         console.log(apiResult);
 
         localStorage.setItem("token", apiResult.data.token);
+        localStorage.setItem("station_id", apiResult.data.station_id);
         // Store user data in localStorage
         localStorage.setItem("userName", apiResult.data.user);
         localStorage.setItem("userRole", apiResult.data.role);

@@ -1,5 +1,6 @@
 const express = require("express");
 const pool = require("../../config/db");
+const bcrypt = require("bcryptjs");
 const { authMiddleware } = require("../../middleware/authMiddleware");
 
 const router = express.Router();
@@ -17,13 +18,22 @@ router.get("/users", authMiddleware, async (req, res) => {
 
 // Add user
 router.post("/users", authMiddleware, async (req, res) => {
-  const { first_name, last_name, phone, password_hash, role, police_station_id } = req.body;
+  const {
+    first_name,
+    last_name,
+    phone,
+    password_hash,
+    role,
+    police_station_id,
+  } = req.body;
+
+  const hash = await bcrypt.hash(password_hash, 10);
 
   try {
     const result = await pool.query(
       `INSERT INTO users (first_name, last_name, phone, password_hash, role, police_station_id) 
        VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`,
-      [first_name, last_name, phone, password_hash, role, police_station_id],
+      [first_name, last_name, phone, hash, role, police_station_id],
     );
 
     res.status(201).json({

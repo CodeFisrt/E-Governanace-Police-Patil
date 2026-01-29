@@ -58,12 +58,17 @@ router.put("/police-stations/:id", authMiddleware, async (req, res) => {
 router.delete("/police-stations/:id", authMiddleware, async (req, res) => {
   const { id } = req.params;
   try {
-    await pool.query("DELETE FROM police_stations WHERE station_id = $1;", [id]);
+    await pool.query("DELETE FROM police_stations WHERE station_id = $1;", [
+      id,
+    ]);
     res.status(200).json({ msg: "Police station deleted successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
     console.log(error);
   }
 });
+
+
+
 
 module.exports = router;

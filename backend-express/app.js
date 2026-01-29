@@ -1,6 +1,11 @@
+require("dotenv").config();
 const authRoutes = require("./routers/authRoute");
 const policeStationRouter = require("./routers/admin/policeStationRouter");
 const villageRouter = require("./routers/admin/villageRoute");
+const categoryRouter = require("./routers/admin/categoryRoute");
+const userRouter = require("./routers/admin/userRoute");
+const dashboardRouter = require("./routers/admin/dashboardRoute");
+const reportRouter = require("./routers/reportRoute");
 const express = require("express");
 const cors = require("cors");
 
@@ -11,13 +16,12 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/auth", authRoutes);
-
-// for add police station through admin
-
 app.use("/api/admin", policeStationRouter);
 app.use("/api/admin", villageRouter);
+app.use("/api/admin", categoryRouter);
+app.use("/api/admin", userRouter);
+app.use("/api/admin", dashboardRouter);
+app.use("/api/reports", reportRouter);
 
 // const BASE_URL = "https://india-location-hub.in/api";
 

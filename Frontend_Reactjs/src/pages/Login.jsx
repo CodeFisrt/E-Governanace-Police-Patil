@@ -19,17 +19,23 @@ function Login({ user, language = "en" }) {
         {
           phone,
           password_hash,
-        }
+        },
       );
 
       if (apiResult.data.role == user) {
-        console.log("Patil login");
-        sessionStorage.setItem("token", apiResult.data.token);
+        console.log(apiResult);
+
+        localStorage.setItem("token", apiResult.data.token);
+        // Store user data in localStorage
+        localStorage.setItem("userName", apiResult.data.user);
+        localStorage.setItem("userRole", apiResult.data.role);
         console.log(apiResult);
         if (apiResult.data.role == "police_patil")
           navigation("/policepatildashboard");
 
-        if (apiResult.data.role == "admin") navigation("/admindashboard");
+        if (apiResult.data.role == "admin") navigation("/admin/dashboard");
+        if (apiResult.data.role == "police_officer")
+          navigation("/policestaion");
       }
         
     } catch (error) {

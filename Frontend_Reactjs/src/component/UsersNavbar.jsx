@@ -60,7 +60,24 @@ function UsersNavbar({ incidentNavbar }) {
   const [language, setLanguage] = useState("en");
   const [showLogout, setShowLogout] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
+
+  // Load user name and notifications from localStorage
+  useEffect(() => {
+    const loadUserData = () => {
+      try {
+        const storedUserName = localStorage.getItem("userName");
+        if (storedUserName) {
+          setUserName(storedUserName);
+        }
+      } catch (error) {
+        console.error("Error loading user data:", error);
+      }
+    };
+
+    loadUserData();
+  }, []);
 
   // Load notifications from localStorage
   useEffect(() => {
@@ -89,6 +106,8 @@ function UsersNavbar({ incidentNavbar }) {
     // Clear all user session/data from localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("userToken");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userRole");
 
     // Close the dropdown
     setShowLogout(false);
@@ -109,7 +128,7 @@ function UsersNavbar({ incidentNavbar }) {
             <div className="text-sm md:text-base">
               <div className="opacity-80">Good Afternoon</div>
               <div className="font-semibold text-lg md:text-xl">
-                Ramrao Patil
+                {userName || "User"}
               </div>
             </div>
 

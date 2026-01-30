@@ -2,32 +2,8 @@ const pool = require("../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-exports.register = async (req, res) => {
-  const { first_name, last_name, phone, role, password_hash, police_station_id } = req.body;
-
-  const hash = await bcrypt.hash(password_hash, 10);
-
-  try {
-    const result = await pool.query(
-      `INSERT INTO users (first_name, last_name, phone, role, password_hash, police_station_id )
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING *;`,
-      [first_name, last_name, phone, role, hash, police_station_id],
-    );
-
-    console.log(result.rows[0]);
-    res
-      .status(201)
-      .json({ msg: "Successfully created a entry", user: result.rows[0] });
-  } catch (error) {
-    res.status(400).json(error);
-    console.log(error);
-  }
-};
-
 exports.login = async (req, res) => {
   const { phone, password_hash } = req.body;
-  const hash = await bcrypt.hash(password_hash, 10);
 
   try {
     const result = await pool.query(`SELECT * FROM users WHERE phone = $1`, [
@@ -38,15 +14,21 @@ exports.login = async (req, res) => {
     console.log(user);
 
     const valid = await bcrypt.compare(password_hash, user.password_hash);
-    console.log(hash);
 
     if (!valid) return res.status(401).json({ msg: "Invalid Password" });
     const token = jwt.sign({ id: user.user_id, role: user.role }, "secret123", {
       expiresIn: "1d",
     });
-    res.status(200).json({ user: user.first_name, role: user.role, token });
+    res.status(200).json({
+      user: user.first_name,
+      station_id: user.police_station_id,
+      role: user.role,
+      token,
+    });
     console.log(res);
   } catch (error) {
+    console.log(error);
+
     res.status(500).json(error);
   }
 };

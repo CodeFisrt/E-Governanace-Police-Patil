@@ -6,6 +6,7 @@ const categoryRouter = require("./routers/admin/categoryRoute");
 const userRouter = require("./routers/admin/userRoute");
 const dashboardRouter = require("./routers/admin/dashboardRoute");
 const reportRouter = require("./routers/reportRoute");
+const getPatils = require("./routers/PoliceStations/police-stations");
 const express = require("express");
 const cors = require("cors");
 
@@ -22,6 +23,7 @@ app.use("/api/admin", categoryRouter);
 app.use("/api/admin", userRouter);
 app.use("/api/admin", dashboardRouter);
 app.use("/api/reports", reportRouter);
+app.use("/api/station", getPatils);
 
 // const BASE_URL = "https://india-location-hub.in/api";
 

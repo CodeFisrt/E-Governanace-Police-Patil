@@ -8,7 +8,7 @@ const {
   getReportCount,
   updateReport,
   deleteReport,
-} = require("../controllers/policePatil/reportController");
+} = require("../controllers/policeStation/reportController");
 
 const { authMiddleware } = require("../middleware/authMiddleware");
 
